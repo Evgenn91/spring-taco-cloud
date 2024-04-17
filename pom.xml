@@ -4,14 +4,99 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- родительский помник с версией spring boot   -->
+    <!-- Для библиотек, определяемых в родительском POM, не нужно указывать
+         версию, потому что она наследуется от родителя. Версия 2.5.3 со-
+         ответствует Spring Boot 2.5.3, соответственно, управление зависи-
+         мостями осуществляется, как определено в этой версии Spring Boot.
+         Среди прочего Spring Boot 2.5.3 определяет базовую версию ядра
+         Spring Framework – 5.3.12. -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.3</version>
+        <relativePath />
+    </parent>
+
     <groupId>com.github.Evgenn91</groupId>
     <artifactId>taco-cloud</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>taco-cloud</name>
+    <description>Taco Cloud Example</description>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <!--имеют слово starter в идентификаторе артефакта. Зависимости от
+            Spring Boot Starter отличаются тем, что они обычно не имеют своего
+            библиотечного кода, а транзитивно подключают другие библиотеки. стр 37-->
+        <!--   стартерам ненужно определять версию, т.к. библиотеки добавленные транзитивно,
+        будут определены по версии вашего spring boot     -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--        Как следует из названия, DevTools – это набор дополнительных инструментов разработчика приложений на Spring, позволяющих:
+                1. автоматически перезапускать приложение при изменении кода;
+                2. автоматически обновлять окно браузера при изменении ресурсов, передаваемых браузеру (таких как шаблоны, сценарии на
+                JavaScript, таблицы стилей и т. д.);
+                3. автоматически отключать кеширование шаблонов;
+                4. открывать встроенную консоль H2, если используется база данных H2.
+                чтобы изменения были видны даже без обновления браузера то нужно установить плагин LiveReload в браузере-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--Плагин Spring Boot-->
+            <!--1. определяет цель Maven, которая позволяет запускать приложение с помощью Maven
+                2. гарантирует включение в выполняемый файл JAR всех библиотек зависимостей и их доступность в пути поиска классов class-path во время выполнения
+                3. создает файл манифеста в архиве JAR, который определяет класс загрузки (в вашем случае TacoCloudApplication) в качестве главного класса для выполняемого файла JAR.-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
